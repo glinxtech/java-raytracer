@@ -38,9 +38,14 @@ public class Vector extends BaseCoordinates
         return dotProduct(this, v2);
     }
 
+    public double dotProduct()
+    {
+        return dotProduct(this, this);
+    }
+
     public double norm()
     {
-        return Math.sqrt(this.dotProduct(this));
+        return Math.sqrt(this.dotProduct());
     }
 
     public void unitVector()
