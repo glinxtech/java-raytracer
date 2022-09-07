@@ -1,6 +1,7 @@
 package ui;
 
 import javax.swing.*;
+import java.io.PrintStream;
 
 public class ImageWindow
 {
@@ -12,5 +13,7 @@ public class ImageWindow
         f.setSize(1920,1080);
         f.setLayout(null);
         f.setVisible(true);
+
+        f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 }
