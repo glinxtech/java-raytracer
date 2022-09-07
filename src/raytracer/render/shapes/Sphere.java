@@ -1,6 +1,6 @@
-package raytracer.shapes;
+package raytracer.render.shapes;
 
-import raytracer.*;
+import raytracer.render.*;
 
 public class Sphere extends Shape
 {

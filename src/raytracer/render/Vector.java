@@ -1,6 +1,6 @@
-package raytracer;
+package raytracer.render;
 
-import raytracer.base.*;
+import raytracer.render.base.*;
 
 /**
  * Represents a 3 dimensional vector.

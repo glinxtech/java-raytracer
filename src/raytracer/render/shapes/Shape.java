@@ -1,6 +1,8 @@
-package raytracer.shapes;
+package raytracer.render.shapes;
 
-import raytracer.*;
+import raytracer.render.HitResult;
+import raytracer.render.Material;
+import raytracer.render.Ray;
 
 /**
  * Base class for the shapes in the scene

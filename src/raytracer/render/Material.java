@@ -1,6 +1,4 @@
-package raytracer;
-
-import raytracer.*;
+package raytracer.render;
 
 public class Material
 {

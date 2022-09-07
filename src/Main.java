@@ -1,12 +1,11 @@
-import java.io.*;
-
-import utils.*;
-import ui.ImageWindow;
+import raytracer.ui.ImageWindow;
+import raytracer.render.*;
 
 public class Main
 {
     public static void main(String[] args)
     {
-	    new ImageWindow();
+        Render tracer = new Render();
+        new ImageWindow(tracer.draw());
     }
 }

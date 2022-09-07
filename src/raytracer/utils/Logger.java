@@ -1,4 +1,4 @@
-package utils;
+package raytracer.utils;
 
 /**
  * Wrapper for logging

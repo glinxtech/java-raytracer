@@ -1,4 +1,4 @@
-package raytracer;
+package raytracer.render;
 
 public class Colour
 {

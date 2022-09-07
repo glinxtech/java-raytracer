@@ -1,6 +1,7 @@
-package raytracer.lights;
+package raytracer.render.lights;
 
-import raytracer.*;
+import raytracer.render.Colour;
+import raytracer.render.Point;
 
 public class PointLight extends Light
 {
