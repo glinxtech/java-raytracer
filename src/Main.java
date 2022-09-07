@@ -1,7 +1,10 @@
-public class Main {
+import java.io.*;
+import ui.ImageWindow;
 
+public class Main
+{
     public static void main(String[] args)
     {
-	// write your code here
+	    new ImageWindow();
     }
 }
