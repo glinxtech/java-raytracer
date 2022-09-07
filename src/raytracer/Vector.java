@@ -21,11 +21,29 @@ public class Vector extends BaseCoordinates
         this.z = endPoint.getZ();
     }
 
-    public Vector(Point first, Point second)
+    public Vector(Point p1, Point p2)
     {
-        this.x = second.getX() - first.getX();
-        this.y = second.getY() - first.getY();
-        this.z = second.getZ() - first.getZ();
+        this.x = p2.getX() - p1.getX();
+        this.y = p2.getY() - p1.getY();
+        this.z = p2.getZ() - p1.getZ();
+    }
+
+    public static Point add(Point point, Vector vector)
+    {
+        double newX = point.getX() + vector.getX();
+        double newY = point.getY() + vector.getY();
+        double newZ = point.getZ() + vector.getZ();
+        return new Point(newX, newY, newZ);
+    }
+
+    public static Vector multiply(Vector v, double scalar)
+    {
+        return new Vector(scalar * v.getX(), scalar * v.getY(),scalar * v.getZ());
+    }
+
+    public Vector multiply(double scalar)
+    {
+        return multiply(this, scalar);
     }
 
     public static double dotProduct(Vector v1, Vector v2)
@@ -68,4 +86,5 @@ public class Vector extends BaseCoordinates
 
         return new Vector(newX, newY, newZ);
     }
+
 }

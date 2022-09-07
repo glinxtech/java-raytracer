@@ -59,11 +59,37 @@ public class Sphere extends Shape
          * our intersection point (radius of the circle) and S.
          * Which we can use pythagoras on again to find the
          * line between S and the intersection.
-         *
-         * Line b minus this is the distance to
-         * the intersection from the view origin.
          */
+        double c = Math.sqrt(r2 - delta2);
 
+        /**
+         * Line b minus c is the distance to
+         * the intersection from the view origin
+         */
+        double c0 = b - c;
+        double c1 = b + c;
 
+        if (c0 > 0.1 && c0 < distance)
+            distance = c0;
+        else if (c1 > 0.1 && c1 < distance)
+            distance = c1;
+        else
+            return null;
+
+        // Intersection point
+        Point hitPoint = Vector.add(ray.getOrigin(), Vector.multiply(ray.getDirection(), distance));
+
+        // Normal to the surface of the object at point of intersection
+        Vector normal = new Vector(this.center, hitPoint);
+
+        try
+        {
+            normal.unitVector();
+        } catch (ArithmeticException e)
+        {
+            // Catch happens if the value is 0
+        }
+
+        return new HitResult(ray, this, distance, hitPoint, normal);
     }
 }
