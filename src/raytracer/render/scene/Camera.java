@@ -9,8 +9,8 @@ public class Camera
     private Point eye;
     private Vector viewDir;
     private double fov;
-    private double width;
-    private double height;
+    private int width;
+    private int height;
 
     private Vector side;
     private Vector up;
@@ -31,6 +31,16 @@ public class Camera
     public Camera(int width, int height)
     {
         this(new Point(0, 0, 0), new Vector(0, 0, 1), 45, width, height);
+    }
+
+    public int getWidth()
+    {
+        return this.width;
+    }
+
+    public int getHeight()
+    {
+        return this.height;
     }
 
     public Ray getRay(double x, double y)
