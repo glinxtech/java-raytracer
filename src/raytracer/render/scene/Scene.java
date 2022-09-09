@@ -18,13 +18,18 @@ public class Scene
         lights = new ArrayList<Light>();
 
         shapes.add(new Sphere(
-                new Point(20.0, 0.0, 500.0),
-                50.0,
+                new Point(0.0, 0.0, 20.0),
+                3.0,
                 Material.redPlastic
         ));
 
+        /* lights.add(new PointLight(
+                new Point(60.0, 250.0, 400.0),
+                0.6
+        )); */
+
         lights.add(new PointLight(
-                new Point(60.0, 250.0, 300.0),
+                new Point(5.0, 5.0, 20.0),
                 0.75
         ));
     }
