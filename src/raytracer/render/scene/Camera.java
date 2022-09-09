@@ -52,7 +52,7 @@ public class Camera
 
     public Ray getRay(double x, double y)
     {
-        // Vector from the eye (0,0,0) to the pixel in camera space.
+        // Vector from the eye (0,0,0) to the pixel in camera space
         Vector camToPixel = new Vector(getPixel(x, y));
         camToPixel.unitVector();
 

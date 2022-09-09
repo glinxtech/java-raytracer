@@ -23,22 +23,26 @@ public class Render
                 img.setRGB(x, y, colour.toPixel());
             }
         }
-
         return img;
     }
 
     public BufferedImage draw()
     {
-       return this.draw(new Scene(), new Camera(1280, 720));
+       return this.draw(new Scene(), new Camera(new Point(50, 0, 0), new Vector(-1, 0, 0),90, 1280, 800));
     }
 
     private Colour trace(Ray ray, Scene scene)
     {
+        // Background colour
         Colour outputColour = new Colour(0, 0, 0);
 
+        // Render distance
         double distance = 5000.0;
         HitResult hit = null;
 
+        // Check for intersection with every shape,
+        // except if the distance is shorter than
+        // the previous hit result
         for (Shape s : scene.getShapes())
         {
             HitResult h = s.hitShape(ray, distance);
@@ -50,10 +54,14 @@ public class Render
             }
         }
 
+        // No shape to draw, next pixel
         if (hit == null)
             return outputColour;
 
         Material currentMaterial = hit.getShape().getMaterial();
+
+        // Primitive ambient lighting
+        outputColour.add(Colour.multiply(currentMaterial.getDiffuse(), new Colour(0.1, 0.1, 0.1)));
 
         for (Light l : scene.getLights())
         {
@@ -69,7 +77,7 @@ public class Render
 
             lightRay.getDirection().unitVector();
 
-            boolean inLight = true;
+            boolean shadowRay = false;
 
             for (Shape s : scene.getShapes())
             {
@@ -77,15 +85,15 @@ public class Render
 
                 if (h != null)
                 {
-                    inLight = false;
+                    shadowRay = true;
                     break;
                 }
             }
 
-            if (inLight)
+            if (!shadowRay)
             {
-                double diffuse = Vector.dotProduct(lightRay.getDirection(), hit.getNormal());
-                Colour adjusted = Colour.multiply(l.getIntensity(), diffuse);
+                double lambert = Vector.dotProduct(lightRay.getDirection(), hit.getNormal());
+                Colour adjusted = Colour.multiply(l.getIntensity(), lambert);
 
                 outputColour.add(adjusted.multiply(currentMaterial.getDiffuse()));
             }
