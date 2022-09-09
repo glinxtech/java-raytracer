@@ -25,7 +25,7 @@ public class Camera
         this.width = width;
         this.height = height;
         this.fov = fov;
-        this.aspectRatio = (double) (width / height);
+        this.aspectRatio = (double)width / height;
 
         setCTWMatrix();
     }
@@ -77,12 +77,13 @@ public class Camera
         double normy = (y + 0.5) / height;
 
         // Map pixels to view plane position [-1, 1]
-        double planex = (2 * normx - 1) * aspectRatio; // Adjust x for aspect ratio
+        double planex = (2 * normx - 1);
         double planey = 1 - 2 * normy;
 
         // Adjust for fov
-        double pixelx = planex * Math.tan(fov / 2 * Math.PI / 180);
-        double pixely = planey * Math.tan(fov / 2 * Math.PI / 180);
+        double fovScale = Math.tan(fov / 2 * Math.PI / 180);
+        double pixelx = planex * fovScale * aspectRatio;
+        double pixely = planey * fovScale;
 
         // Return co-ordinate of the pixel in cam co-ords with the viewplane x/y and sitting at 1 unit away from the camera eye
         return new Point(pixelx, pixely, 1);
