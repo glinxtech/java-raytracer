@@ -65,9 +65,6 @@ public class Render
 
         Material currentMaterial = hit.getShape().getMaterial();
 
-        // Primitive ambient lighting
-        outputColour.add(Colour.multiply(currentMaterial.getDiffuse(), new Colour(0.1, 0.1, 0.1)));
-
         for (Light l : scene.getLights())
         {
             Ray lightRay = new Ray(
@@ -78,15 +75,12 @@ public class Render
             // Length of light ray projected onto the normal
             double lightProjection = Vector.dotProduct(lightRay.getDirection(), hit.getNormal());
 
-            // If true, this ray goes through the shape
+            // If true, light is on the other side of the surface
             if (lightProjection <= 0.0)
                 continue;
 
             // Distance light traveled
             double d2 = lightRay.getDirection().dotProduct();
-
-            // Normalize
-            lightRay.getDirection().unitVector();
 
             boolean shadowRay = false;
 
@@ -109,15 +103,29 @@ public class Render
             // This light ray reaches our shape
             if (!shadowRay)
             {
-                // Angle of light ray to determine the intensity
-                double lambert = Vector.dotProduct(lightRay.getDirection(), hit.getNormal());
-                double lightPower = lambert * l.getIntensity() / d2;
-                System.out.println(lightPower);
-                Colour adjusted = Colour.multiply(l.getColour(), lightPower);
 
-                outputColour.add(adjusted.multiply(currentMaterial.getDiffuse()));
+                double lightPower = l.getIntensity() / d2;
+
+                // Lambert/diffuse shading, intensity based on the angle the light falls on the surface
+                double lambert = Vector.dotProduct(lightRay.getDirection().unitVector(), hit.getNormal());
+
+                Colour diffuse = Colour.multiply((lambert * lightPower), currentMaterial.getDiffuse(), l.getColour());
+
+                outputColour.add(diffuse);
+
+                // Blinn-Phong/Specular shading
+                Vector halfDir = lightRay.getDirection().add(ray.getDirection()).unitVector();
+                double specAngle = Math.max(halfDir.dotProduct(hit.getNormal()), 0.0);
+                double specPower = Math.pow(specAngle, currentMaterial.getShine());
+                Colour specular = Colour.multiply((specAngle * specPower), currentMaterial.getSpecular(), l.getColour());
+
+                outputColour.add(specular);
             }
         }
+        // Primitive ambient lighting
+        Colour ambientLight = new Colour(0.1, 0.1, 0.1);
+        outputColour.add(Colour.multiply(currentMaterial.getDiffuse(), ambientLight));
+
         return outputColour;
     }
 }

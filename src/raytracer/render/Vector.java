@@ -5,35 +5,47 @@ import raytracer.render.base.*;
 /**
  * Represents a 3 dimensional vector.
  */
-public class Vector extends BaseCoordinates
+public class Vector extends Point
 {
     public Vector(double x, double y, double z)
     {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        super(x, y, z);
     }
 
     public Vector(Point endPoint)
     {
-        this.x = endPoint.getX();
-        this.y = endPoint.getY();
-        this.z = endPoint.getZ();
+        this(endPoint.getX(), endPoint.getY(), endPoint.getZ());
     }
 
     public Vector(Point p1, Point p2)
     {
-        this.x = p2.getX() - p1.getX();
-        this.y = p2.getY() - p1.getY();
-        this.z = p2.getZ() - p1.getZ();
+        this(Vector.subtract(p2, p1));
     }
 
-    public static Point add(Point point, Vector vector)
+    public static Vector add(Point point, Vector vector)
     {
         double newX = point.getX() + vector.getX();
         double newY = point.getY() + vector.getY();
         double newZ = point.getZ() + vector.getZ();
-        return new Point(newX, newY, newZ);
+        return new Vector(newX, newY, newZ);
+    }
+
+    public Vector add(Vector vector)
+    {
+        return add(this, vector);
+    }
+
+    public static Vector subtract(Point v1, Point v2)
+    {
+        double newX = v1.getX() - v2.getX();
+        double newY = v1.getY() - v2.getY();
+        double newZ = v1.getZ() - v2.getZ();
+        return new Vector(newX, newY, newZ);
+    }
+
+    public Vector subtract(Point point)
+    {
+        return subtract(this, point);
     }
 
     public static Vector multiply(Vector v, double scalar)
@@ -66,16 +78,15 @@ public class Vector extends BaseCoordinates
         return Math.sqrt(this.dotProduct());
     }
 
-    public void unitVector()
+    public Vector unitVector()
     {
         double norm = norm();
         if (norm == 0)
         {
             throw new ArithmeticException("Norm equals 0. Unable to normalize vector.");
         }
-        this.x = this.x / norm;
-        this.y = this.y / norm;
-        this.z = this.z / norm;
+
+        return new Vector(this.x / norm, this.y / norm, this.z / norm);
     }
 
     public Vector crossProduct(Vector v2)
