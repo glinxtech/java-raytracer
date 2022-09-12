@@ -1,5 +1,5 @@
+import raytracer.Render;
 import raytracer.ui.ImageWindow;
-import raytracer.render.*;
 
 public class Main
 {

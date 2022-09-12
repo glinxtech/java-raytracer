@@ -1,11 +1,11 @@
-package raytracer.render.scene;
+package raytracer.scene;
 
 import java.util.ArrayList;
 
-import raytracer.render.Material;
-import raytracer.render.Point;
-import raytracer.render.shapes.*;
-import raytracer.render.lights.*;
+import raytracer.Material;
+import raytracer.Point;
+import raytracer.shapes.*;
+import raytracer.lights.*;
 
 public class Scene
 {

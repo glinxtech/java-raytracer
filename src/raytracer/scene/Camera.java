@@ -1,8 +1,8 @@
-package raytracer.render.scene;
+package raytracer.scene;
 
-import raytracer.render.Point;
-import raytracer.render.Ray;
-import raytracer.render.Vector;
+import raytracer.Point;
+import raytracer.Ray;
+import raytracer.Vector;
 
 public class Camera
 {

@@ -1,7 +1,7 @@
-package raytracer.render.lights;
+package raytracer.lights;
 
-import raytracer.render.Colour;
-import raytracer.render.Point;
+import raytracer.Colour;
+import raytracer.Point;
 
 public abstract class Light
 {

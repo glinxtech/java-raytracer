@@ -1,6 +1,6 @@
-package raytracer.render;
+package raytracer;
 
-import raytracer.render.base.BaseCoordinates;
+import raytracer.base.BaseCoordinates;
 
 /**
  * Represents a point in 3d space with 3 co-ordinates.

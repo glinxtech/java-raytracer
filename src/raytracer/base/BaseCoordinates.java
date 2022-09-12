@@ -1,4 +1,4 @@
-package raytracer.render.base;
+package raytracer.base;
 
 /**
  * Base class for vectors and points in space.

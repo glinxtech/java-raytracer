@@ -1,4 +1,4 @@
-package raytracer.render;
+package raytracer;
 
 public class Ray
 {

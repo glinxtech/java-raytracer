@@ -1,6 +1,6 @@
-package raytracer.render;
+package raytracer;
 
-import raytracer.render.shapes.*;
+import raytracer.shapes.*;
 
 /**
  * Data transfer object for ray-object intersections

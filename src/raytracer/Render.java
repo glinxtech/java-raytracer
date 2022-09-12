@@ -1,10 +1,10 @@
-package raytracer.render;
+package raytracer;
 
 import java.awt.image.BufferedImage;
 
-import raytracer.render.scene.*;
-import raytracer.render.shapes.*;
-import raytracer.render.lights.*;
+import raytracer.scene.*;
+import raytracer.shapes.*;
+import raytracer.lights.*;
 
 public class Render
 {
