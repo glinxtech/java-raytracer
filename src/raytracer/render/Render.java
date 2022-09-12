@@ -75,12 +75,15 @@ public class Render
                     new Vector(hit.getHitPoint(), l.getPosition())
                     );
 
-            // Length of lightray projected onto the normal
+            // Length of light ray projected onto the normal
             double lightProjection = Vector.dotProduct(lightRay.getDirection(), hit.getNormal());
 
             // If true, this ray goes through the shape
             if (lightProjection <= 0.0)
                 continue;
+
+            // Distance light traveled
+            double d2 = lightRay.getDirection().dotProduct();
 
             // Normalize
             lightRay.getDirection().unitVector();
@@ -108,7 +111,9 @@ public class Render
             {
                 // Angle of light ray to determine the intensity
                 double lambert = Vector.dotProduct(lightRay.getDirection(), hit.getNormal());
-                Colour adjusted = Colour.multiply(l.getIntensity(), lambert);
+                double lightPower = lambert * l.getIntensity() / d2;
+                System.out.println(lightPower);
+                Colour adjusted = Colour.multiply(l.getColour(), lightPower);
 
                 outputColour.add(adjusted.multiply(currentMaterial.getDiffuse()));
             }
