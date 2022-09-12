@@ -75,16 +75,23 @@ public class Render
                     new Vector(hit.getHitPoint(), l.getPosition())
                     );
 
-            //
+            // Length of lightray projected onto the normal
             double lightProjection = Vector.dotProduct(lightRay.getDirection(), hit.getNormal());
 
+            // If true, this ray goes through the shape
             if (lightProjection <= 0.0)
                 continue;
 
+            // Normalize
             lightRay.getDirection().unitVector();
 
             boolean shadowRay = false;
 
+            /**
+             * If a shape is between this light and
+             * our intersection point, this is a shadowRay.
+             * Move onto the next light.
+             */
             for (Shape s : scene.getShapes())
             {
                 HitResult h = s.hitShape(lightRay, lightRay.getDirection().norm());
@@ -96,8 +103,10 @@ public class Render
                 }
             }
 
+            // This light ray reaches our shape
             if (!shadowRay)
             {
+                // Angle of light ray to determine the intensity
                 double lambert = Vector.dotProduct(lightRay.getDirection(), hit.getNormal());
                 Colour adjusted = Colour.multiply(l.getIntensity(), lambert);
 
