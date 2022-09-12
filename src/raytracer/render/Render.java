@@ -10,16 +10,21 @@ public class Render
 {
     public BufferedImage draw(Scene scene, Camera camera)
     {
+        // Image we're going to display in our Image Window
         BufferedImage img = new BufferedImage(camera.getWidth(), camera.getHeight(), BufferedImage.TYPE_INT_RGB);
 
+        // Loop through all the pixels we're going to colour
         for (int y = 0; y < camera.getHeight(); y++)
         {
             for (int x = 0; x < camera.getWidth(); x++)
             {
+                // Find the ray that goes through our image plane at this pixel
                 Ray viewRay = camera.getRay(x, y);
 
+                // Colour of our pixel
                 Colour colour = trace(viewRay, scene);
 
+                // Fill in the pixel with the given colour
                 img.setRGB(x, y, colour.toPixel());
             }
         }
@@ -70,6 +75,7 @@ public class Render
                     new Vector(hit.getHitPoint(), l.getPosition())
                     );
 
+            //
             double lightProjection = Vector.dotProduct(lightRay.getDirection(), hit.getNormal());
 
             if (lightProjection <= 0.0)
