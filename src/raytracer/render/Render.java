@@ -18,14 +18,32 @@ public class Render
         {
             for (int x = 0; x < camera.getWidth(); x++)
             {
-                // Find the ray that goes through our image plane at this pixel
-                Ray viewRay = camera.getRay(x, y);
+                Colour outputColour = new Colour(0, 0, 0);
 
-                // Colour of our pixel
-                Colour colour = trace(viewRay, scene);
+                if (y == camera.getHeight()/2 && x == camera.getWidth()/2)
+                    System.out.println("50%");
+
+                if (y == camera.getHeight()/4 && x == camera.getWidth()/4)
+                    System.out.println("20%");
+
+                for (double ax = x; ax < x + 1; ax += 0.5)
+                {
+                    for (double ay = y; ay < y + 1; ay += 0.5)
+                    {
+                        // Find the ray that goes through our image plane at this pixel
+                        Ray viewRay = camera.getRay(ax, ay);
+
+                        // Colour of our pixel
+                        Colour colour = trace(viewRay, scene);
+
+                        // Each sample contributes to 1/4th of the colour
+                        double sampleRatio = 0.25;
+                        outputColour.add(colour.multiply(sampleRatio));
+                    }
+                }
 
                 // Fill in the pixel with the given colour
-                img.setRGB(x, y, colour.toPixel());
+                img.setRGB(x, y, outputColour.toPixel());
             }
         }
         return img;
@@ -33,7 +51,7 @@ public class Render
 
     public BufferedImage draw()
     {
-       return this.draw(new Scene(), new Camera(new Point(50, 0, 0), new Vector(-1, 0, 0),90, 1280, 800));
+       return this.draw(new Scene(), new Camera(new Point(50, 0, 0), new Vector(-1, 0, 0),90, 400, 400));
     }
 
     private Colour trace(Ray ray, Scene scene)
