@@ -19,7 +19,7 @@ public class Scene
 
         shapes.add(new Sphere(
                 new Point(0.0, 0.0, 20.0),
-                3.0,
+                5.0,
                 Material.redPlastic
         ));
 
@@ -29,8 +29,8 @@ public class Scene
         )); */
 
         lights.add(new PointLight(
-                new Point(5.0, 5.0, 20.0),
-                0.75
+                new Point(5.0, 10.0, 20.0),
+                40
         ));
     }
 

@@ -10,16 +10,21 @@ public class Render
 {
     public BufferedImage draw(Scene scene, Camera camera)
     {
+        // Image we're going to display in our Image Window
         BufferedImage img = new BufferedImage(camera.getWidth(), camera.getHeight(), BufferedImage.TYPE_INT_RGB);
 
+        // Loop through all the pixels we're going to colour
         for (int y = 0; y < camera.getHeight(); y++)
         {
             for (int x = 0; x < camera.getWidth(); x++)
             {
+                // Find the ray that goes through our image plane at this pixel
                 Ray viewRay = camera.getRay(x, y);
 
+                // Colour of our pixel
                 Colour colour = trace(viewRay, scene);
 
+                // Fill in the pixel with the given colour
                 img.setRGB(x, y, colour.toPixel());
             }
         }
@@ -70,15 +75,26 @@ public class Render
                     new Vector(hit.getHitPoint(), l.getPosition())
                     );
 
+            // Length of light ray projected onto the normal
             double lightProjection = Vector.dotProduct(lightRay.getDirection(), hit.getNormal());
 
+            // If true, this ray goes through the shape
             if (lightProjection <= 0.0)
                 continue;
 
+            // Distance light traveled
+            double d2 = lightRay.getDirection().dotProduct();
+
+            // Normalize
             lightRay.getDirection().unitVector();
 
             boolean shadowRay = false;
 
+            /**
+             * If a shape is between this light and
+             * our intersection point, this is a shadowRay.
+             * Move onto the next light.
+             */
             for (Shape s : scene.getShapes())
             {
                 HitResult h = s.hitShape(lightRay, lightRay.getDirection().norm());
@@ -90,10 +106,14 @@ public class Render
                 }
             }
 
+            // This light ray reaches our shape
             if (!shadowRay)
             {
+                // Angle of light ray to determine the intensity
                 double lambert = Vector.dotProduct(lightRay.getDirection(), hit.getNormal());
-                Colour adjusted = Colour.multiply(l.getIntensity(), lambert);
+                double lightPower = lambert * l.getIntensity() / d2;
+                System.out.println(lightPower);
+                Colour adjusted = Colour.multiply(l.getColour(), lightPower);
 
                 outputColour.add(adjusted.multiply(currentMaterial.getDiffuse()));
             }
