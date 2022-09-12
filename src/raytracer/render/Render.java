@@ -20,12 +20,6 @@ public class Render
             {
                 Colour outputColour = new Colour(0, 0, 0);
 
-                if (y == camera.getHeight()/2 && x == camera.getWidth()/2)
-                    System.out.println("50%");
-
-                if (y == camera.getHeight()/4 && x == camera.getWidth()/4)
-                    System.out.println("20%");
-
                 for (double ax = x; ax < x + 1; ax += 0.5)
                 {
                     for (double ay = y; ay < y + 1; ay += 0.5)
