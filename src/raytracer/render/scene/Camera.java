@@ -53,8 +53,7 @@ public class Camera
     public Ray getRay(double x, double y)
     {
         // Vector from the eye (0,0,0) to the pixel in camera space
-        Vector camToPixel = new Vector(getPixel(x, y));
-        camToPixel.unitVector();
+        Vector camToPixel = new Vector(getPixel(x, y)).unitVector();
 
         // Camera to World translation to retrieve the X, Y, Z of the vector in absolute co-ordinate values
         double dirX = camToPixel.getX() * side.getX() + camToPixel.getY() * side.getY() + camToPixel.getZ()* side.getZ();
@@ -62,9 +61,7 @@ public class Camera
         double dirZ = camToPixel.getX() * viewDir.getX() + camToPixel.getY() * viewDir.getY() + camToPixel.getZ()* viewDir.getZ();
 
         // Create a new vector with these values that will be the direction of our ray
-        Vector rayDir = new Vector(dirX, dirY, dirZ);
-        // Normalize vector
-        rayDir.unitVector();
+        Vector rayDir = new Vector(dirX, dirY, dirZ).unitVector();
 
         // Return ray with the origin and direction in absolute co-ords
         return new Ray(eye, rayDir);
@@ -94,15 +91,12 @@ public class Camera
      */
     private void setCTWMatrix()
     {
-        viewDir.unitVector();
 
         // Calculate the vector to the right of the camera, perpendicular to the viewdirection
-        side = viewDir.crossProduct(new Vector(0, 1, 0));
-        side.unitVector();
+        side = viewDir.crossProduct(new Vector(0, 1, 0)).unitVector();
 
         // Calculates the vector upwards of the camera, perpendicular to the plane given by the view direction and side vectors
-        up = side.crossProduct(viewDir);
-        up.unitVector();
+        up = side.crossProduct(viewDir).unitVector();
 
         /* Sadly no reason to have this as we don't have a matrix class for such math
         camToWorld[0][0] = side.getX();

@@ -9,13 +9,13 @@ public class Material
 
     private Colour diffuse;
     private Colour specular;
-    private double power;
+    private double shine;
 
     public Material(Colour diffuse, Colour specular, double power)
     {
         this.diffuse = diffuse;
         this.specular = specular;
-        this.power = power;
+        this.shine = power;
     }
 
     public Colour getDiffuse()
@@ -28,8 +28,8 @@ public class Material
         return this.specular;
     }
 
-    public double getPower()
+    public double getShine()
     {
-        return this.power;
+        return this.shine;
     }
 }

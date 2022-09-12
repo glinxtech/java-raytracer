@@ -54,13 +54,26 @@ public class Colour
         return new Colour(this.red * colour.getRed(), this.green * colour.getGreen(), this.blue * colour.getBlue());
     }
 
-    public static Colour multiply(Colour colour, double multiplier)
+    public static Colour multiply(double multiplier, Colour c1, Colour... colours)
     {
-        return new Colour(multiplier * colour.getRed(), multiplier * colour.getGreen(), multiplier * colour.getBlue());
+        Colour newColour = c1;
+
+        for (Colour c2 : colours)
+        {
+            newColour = newColour.multiply(c2);
+        }
+
+        return newColour.multiply(multiplier);
     }
 
-    public static Colour multiply(Colour c1, Colour c2)
+    public static Colour multiply(Colour c1, Colour... colours)
     {
-        return new Colour(c1.getRed() * c2.getRed(), c1.getGreen() * c2.getGreen(), c1.getBlue() * c2.getBlue());
+        return Colour.multiply(1, c1, colours);
     }
+
+    public static Colour multiply(Colour colour, double multiplier)
+    {
+        return colour.multiply(multiplier);
+    }
+
 }

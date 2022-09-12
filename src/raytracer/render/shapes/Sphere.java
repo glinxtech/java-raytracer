@@ -84,7 +84,7 @@ public class Sphere extends Shape
 
         try
         {
-            normal.unitVector();
+            normal = normal.unitVector();
         } catch (ArithmeticException e)
         {
             // Catch happens if the value is 0
