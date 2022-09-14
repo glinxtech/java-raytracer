@@ -2,7 +2,7 @@ package raytracer;
 
 public class Material
 {
-    public static final Material redPlastic = new Material(new Colour(1, 0, 0), new Colour(1, 1, 1), 20);
+    public static final Material redPlastic = new Material(new Colour(1, 0, 0), new Colour(1, 1, 1), 10);
     public static final Material greenPlastic = new Material(new Colour(0, 1, 0), new Colour(1, 1, 1), 20);
     public static final Material bluePlastic = new Material(new Colour(0, 0, 1), new Colour(1, 1, 1), 20);
     public static final Material whitePlastic = new Material(new Colour(1, 1, 1), new Colour(1, 1, 1), 20);

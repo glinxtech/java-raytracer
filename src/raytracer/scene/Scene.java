@@ -23,15 +23,28 @@ public class Scene
                 Material.redPlastic
         ));
 
+        shapes.add(new Sphere(
+                new Point(20, -5.0, 30.0),
+                7.0,
+                Material.greenPlastic
+        ));
+
         /* lights.add(new PointLight(
                 new Point(60.0, 250.0, 400.0),
                 0.6
         )); */
 
         lights.add(new PointLight(
-                new Point(5.0, 10.0, 20.0),
-                40
-        ));
+                new Point(10, 10.0, 20.0),
+                100
+                    )
+        );
+
+        lights.add(new PointLight(
+                new Point(-5, 5, 8),
+                80
+                )
+        );
     }
 
     public ArrayList<Shape> getShapes()

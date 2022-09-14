@@ -45,7 +45,7 @@ public class Render
 
     public BufferedImage draw()
     {
-       return this.draw(new Scene(), new Camera(new Point(50, 0, 0), new Vector(-1, 0, 0),90, 400, 400));
+       return this.draw(new Scene(), new Camera(new Point(0, 0, 0), new Vector(0, 0, 1),70, 1280, 720));
     }
 
     private Colour trace(Ray ray, Scene scene)
@@ -92,7 +92,8 @@ public class Render
                 continue;
 
             // Distance light traveled
-            double d2 = lightRay.getDirection().dotProduct();
+            double lightDistance = lightRay.getDirection().norm();
+            lightRay.getDirection().normalize();
 
             boolean shadowRay = false;
 
@@ -103,19 +104,19 @@ public class Render
              */
             for (Shape s : scene.getShapes())
             {
-                HitResult h = s.hitShape(lightRay, lightRay.getDirection().norm());
+                HitResult h = s.hitShape(lightRay, lightDistance);
 
                 if (h != null)
                 {
                     shadowRay = true;
-                    break;
                 }
             }
+
+            double d2 = lightDistance * lightDistance;
 
             // This light ray reaches our shape
             if (!shadowRay)
             {
-
                 double lightPower = l.getIntensity() / d2;
 
                 // Lambert/diffuse shading, intensity based on the angle the light falls on the surface
@@ -129,7 +130,7 @@ public class Render
                 Vector halfDir = lightRay.getDirection().add(ray.getDirection()).unitVector();
                 double specAngle = Math.max(halfDir.dotProduct(hit.getNormal()), 0.0);
                 double specPower = Math.pow(specAngle, currentMaterial.getShine());
-                Colour specular = Colour.multiply((specAngle * specPower), currentMaterial.getSpecular(), l.getColour());
+                Colour specular = Colour.multiply((specPower * lightPower), currentMaterial.getSpecular(), l.getColour());
 
                 outputColour.add(specular);
             }
