@@ -1,7 +1,6 @@
 package raytracer.shapes;
 
 import raytracer.colour.Material;
-import raytracer.math.HitResult;
 import raytracer.math.Point;
 import raytracer.math.Ray;
 import raytracer.math.Vector;
@@ -64,7 +63,7 @@ public class Sphere extends Shape
          * Which we can use pythagoras on again to find the
          * line between S and the intersection.
          */
-        double c = Math.sqrt(r2 - delta2);
+        double c = Math.sqrt(this.r2 - delta2);
 
         /**
          * Line b minus c is the distance to

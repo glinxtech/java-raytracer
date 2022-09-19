@@ -1,4 +1,4 @@
-package raytracer.math;
+package raytracer.shapes;
 
 import raytracer.math.Point;
 import raytracer.math.Ray;

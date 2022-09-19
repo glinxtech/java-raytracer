@@ -1,6 +1,5 @@
 package raytracer.shapes;
 
-import raytracer.math.HitResult;
 import raytracer.colour.Material;
 import raytracer.math.Ray;
 

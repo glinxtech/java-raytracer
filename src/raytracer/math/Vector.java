@@ -87,6 +87,15 @@ public class Vector extends Point
         return new Vector(this.x / norm, this.y / norm, this.z / norm);
     }
 
+    public void normalize()
+    {
+        Vector newVector = this.unitVector();
+
+        this.x = newVector.getX();
+        this.y = newVector.getY();
+        this.z = newVector.getZ();
+    }
+
     public Vector crossProduct(Vector v2)
     {
         double newX = this.getY() * v2.getZ() - this.getZ() * v2.getY();

@@ -1,4 +1,4 @@
-import raytracer.scene.Render;
+import raytracer.Render;
 import raytracer.ui.ImageWindow;
 
 public class Main
