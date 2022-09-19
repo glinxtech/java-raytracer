@@ -1,6 +1,10 @@
 package raytracer.shapes;
 
-import raytracer.*;
+import raytracer.colour.Material;
+import raytracer.math.HitResult;
+import raytracer.math.Point;
+import raytracer.math.Ray;
+import raytracer.math.Vector;
 
 public class Sphere extends Shape
 {

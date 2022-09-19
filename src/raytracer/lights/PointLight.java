@@ -1,7 +1,7 @@
 package raytracer.lights;
 
-import raytracer.Colour;
-import raytracer.Point;
+import raytracer.colour.Colour;
+import raytracer.math.Point;
 
 public class PointLight extends Light
 {

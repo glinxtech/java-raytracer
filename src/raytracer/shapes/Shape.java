@@ -1,8 +1,8 @@
 package raytracer.shapes;
 
-import raytracer.HitResult;
-import raytracer.Material;
-import raytracer.Ray;
+import raytracer.math.HitResult;
+import raytracer.colour.Material;
+import raytracer.math.Ray;
 
 /**
  * Base class for the shapes in the scene

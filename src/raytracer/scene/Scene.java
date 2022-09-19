@@ -2,8 +2,8 @@ package raytracer.scene;
 
 import java.util.ArrayList;
 
-import raytracer.Material;
-import raytracer.Point;
+import raytracer.colour.Material;
+import raytracer.math.Point;
 import raytracer.shapes.*;
 import raytracer.lights.*;
 

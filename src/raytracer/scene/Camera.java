@@ -1,8 +1,8 @@
 package raytracer.scene;
 
-import raytracer.Point;
-import raytracer.Ray;
-import raytracer.Vector;
+import raytracer.math.Point;
+import raytracer.math.Ray;
+import raytracer.math.Vector;
 
 public class Camera
 {
