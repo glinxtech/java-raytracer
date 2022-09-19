@@ -112,15 +112,16 @@ public class Render
                 }
             }
 
-            double d2 = lightDistance * lightDistance;
 
             // This light ray reaches our shape
             if (!shadowRay)
             {
+                double d2 = lightDistance * lightDistance;
+
                 double lightPower = l.getIntensity() / d2;
 
                 // Lambert/diffuse shading, intensity based on the angle the light falls on the surface
-                double lambert = Vector.dotProduct(lightRay.getDirection().unitVector(), hit.getNormal());
+                double lambert = Vector.dotProduct(lightRay.getDirection(), hit.getNormal());
 
                 Colour diffuse = Colour.multiply((lambert * lightPower), currentMaterial.getDiffuse(), l.getColour());
 

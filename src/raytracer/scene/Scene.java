@@ -35,7 +35,7 @@ public class Scene
         )); */
 
         lights.add(new PointLight(
-                new Point(10, 10.0, 20.0),
+                new Point(30, 10.0, 15.0),
                 100
                     )
         );
