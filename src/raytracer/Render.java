@@ -130,7 +130,8 @@ public class Render
                 outputColour.add(diffuse);
 
                 // Blinn-Phong/Specular shading
-                Vector halfDir = lightRay.getDirection().add(ray.getDirection()).unitVector();
+                Vector inverseView = new Vector(hit.getHitPoint(), ray.getOrigin()).unitVector();
+                Vector halfDir = lightRay.getDirection().add(inverseView).unitVector();
                 double specAngle = Math.max(halfDir.dotProduct(hit.getNormal()), 0.0);
                 double specPower = Math.pow(specAngle, currentMaterial.getShine());
                 Colour specular = Colour.multiply((specPower * lightPower), currentMaterial.getSpecular(), l.getColour());
