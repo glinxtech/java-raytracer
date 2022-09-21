@@ -29,20 +29,15 @@ public class Scene
                 Material.greenPlastic
         ));
 
-        /* lights.add(new PointLight(
-                new Point(60.0, 250.0, 400.0),
-                0.6
-        )); */
-
-        lights.add(new PointLight(
+       lights.add(new PointLight(
                         new Point(30, 10.0, 15.0),
                         100
                 )
         );
 
         lights.add(new PointLight(
-                        new Point(-5, 5, 8),
-                        80
+                        new Point(-5, 12, 8),
+                        60
                 )
         );
     }

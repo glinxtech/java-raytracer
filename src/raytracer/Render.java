@@ -118,29 +118,43 @@ public class Render
             // This light ray reaches our shape
             if (!shadowRay)
             {
-                double d2 = lightDistance * lightDistance;
-
-                double lightPower = l.getIntensity() / d2;
 
                 // Lambert/diffuse shading, intensity based on the angle the light falls on the surface
-                double lambert = Vector.dotProduct(lightRay.getDirection(), hit.getNormal());
+                // Ranges from 0-1
+                double lambert = Math.max(Vector.dotProduct(lightRay.getDirection(), hit.getNormal()), 0.0);
 
+                if (lambert == 0.0)
+                    continue;
+
+                // Adjusted light intensity for distance to surface
+                double d2 = lightDistance * lightDistance;
+                double lightPower = l.getIntensity() / d2;
+
+                // Total diffuse colour this light source contributed to this pixel
                 Colour diffuse = Colour.multiply((lambert * lightPower), currentMaterial.getDiffuse(), l.getColour());
-
                 outputColour.add(diffuse);
 
-                // Blinn-Phong/Specular shading
-                Vector inverseView = new Vector(hit.getHitPoint(), ray.getOrigin()).unitVector();
-                Vector halfDir = lightRay.getDirection().add(inverseView).unitVector();
+                // Blinn-Phong/Specular shading, intensity based on both
+                // the angle at which we view the surface and
+                // the angle the light falls on the surface
+
+                // Halfway vector between the light ray and our view ray
+                Vector halfDir = lightRay.getDirection()
+                                            .subtract(ray.getDirection())
+                                            .unitVector();
+
+                // Cosine of the angle between our halfway vector and the surface normal
+                // Ranges from 0-1
                 double specAngle = Math.max(halfDir.dotProduct(hit.getNormal()), 0.0);
                 double specPower = Math.pow(specAngle, currentMaterial.getShine());
-                Colour specular = Colour.multiply((specPower * lightPower), currentMaterial.getSpecular(), l.getColour());
 
+                // Total specular colour this light source contributed to this pixel
+                Colour specular = Colour.multiply((specPower * lightPower), currentMaterial.getSpecular(), l.getColour());
                 outputColour.add(specular);
             }
         }
         // Primitive ambient lighting
-        Colour ambientLight = new Colour(0.1, 0.1, 0.1);
+        Colour ambientLight = new Colour(0.05, 0.05, 0.05);
         outputColour.add(Colour.multiply(currentMaterial.getDiffuse(), ambientLight));
 
         return outputColour;

@@ -46,6 +46,11 @@ public class Vector extends Point
         return subtract(this, point);
     }
 
+    public Vector negative()
+    {
+        return new Vector(-(this.getX()), -(this.getY()), -(this.getZ()));
+    }
+
     public static Vector multiply(Vector v, double scalar)
     {
         return new Vector(scalar * v.getX(), scalar * v.getY(),scalar * v.getZ());
