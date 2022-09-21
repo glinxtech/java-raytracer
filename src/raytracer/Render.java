@@ -99,11 +99,10 @@ public class Render
 
             boolean shadowRay = false;
 
-            /**
-             * If a shape is between this light and
-             * our intersection point, this is a shadowRay.
-             * Move onto the next light.
-             */
+             // If a shape is between this light and
+             // our intersection point, this is a shadowRay.
+             // Move onto the next light.
+
             for (Shape s : scene.getShapes())
             {
                 HitResult h = s.hitShape(lightRay, lightDistance);
@@ -119,8 +118,10 @@ public class Render
             if (!shadowRay)
             {
 
-                // Lambert/diffuse shading, intensity based on the angle the light falls on the surface
-                // Ranges from 0-1
+                // Lambert/diffuse shading
+                // The amount of light the surface receives is directly
+                // proportional to the angle at which light hits the surface
+                // Dot product gives us the cosine of this angle, range 0-1
                 double lambert = Math.max(Vector.dotProduct(lightRay.getDirection(), hit.getNormal()), 0.0);
 
                 if (lambert == 0.0)
@@ -146,6 +147,8 @@ public class Render
                 // Cosine of the angle between our halfway vector and the surface normal
                 // Ranges from 0-1
                 double specAngle = Math.max(halfDir.dotProduct(hit.getNormal()), 0.0);
+
+                // Amount of reflected light in our view direction
                 double specPower = Math.pow(specAngle, currentMaterial.getShine());
 
                 // Total specular colour this light source contributed to this pixel
