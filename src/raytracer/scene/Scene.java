@@ -29,6 +29,12 @@ public class Scene
                 Material.greenPlastic
         ));
 
+        shapes.add(new Sphere(
+                new Point(40, 6.0, 35.0),
+                3.0,
+                Material.bluePlastic
+        ));
+
         /* lights.add(new PointLight(
                 new Point(60.0, 250.0, 400.0),
                 0.6
@@ -43,6 +49,12 @@ public class Scene
         lights.add(new PointLight(
                         new Point(-5, 5, 8),
                         80
+                )
+        );
+
+        lights.add(new PointLight(
+                        new Point(40, 6, 4),
+                        50
                 )
         );
     }
