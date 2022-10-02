@@ -55,68 +55,71 @@ public class Render
         // Background colour
         Colour outputColour = new Colour(0, 0, 0);
 
-        // Render distance
-        double distance = 5000.0;
-        HitResult hit = null;
+        // Bounces so far
+        int bounce = 0;
 
-        // Check for intersection with every shape,
-        // except if the distance is shorter than
-        // the previous hit result
-        for (Shape s : scene.getShapes())
-        {
-            HitResult h = s.hitShape(ray, distance);
+        // How much this ray contributes to the colour, reduces each bounce
+        double weight = 1;
 
-            if (h != null)
-            {
-                hit = h;
-                distance = hit.getDistance();
-            }
-        }
+        do {
 
-        // No shape to draw, next pixel
-        if (hit == null)
-            return outputColour;
+            // Render distance
+            double distance = 5000.0;
+            HitResult hit = null;
 
-        Material currentMaterial = hit.getShape().getMaterial();
-
-        for (Light l : scene.getLights())
-        {
-            Ray lightRay = new Ray(
-                    hit.getHitPoint(),
-                    new Vector(hit.getHitPoint(), l.getPosition())
-            );
-
-            // Length of light ray projected onto the normal
-            double lightProjection = Vector.dotProduct(lightRay.getDirection(), hit.getNormal());
-
-            // If true, light is on the other side of the surface
-            if (lightProjection <= 0.0)
-                continue;
-
-            // Distance light traveled
-            double lightDistance = lightRay.getDirection().norm();
-            lightRay.getDirection().normalize();
-
-            boolean shadowRay = false;
-
-             // If a shape is between this light and
-             // our intersection point, this is a shadowRay.
-             // Move onto the next light.
-
+            // Check for intersection with every shape,
+            // except if the distance is shorter than
+            // the previous hit result
             for (Shape s : scene.getShapes())
             {
-                HitResult h = s.hitShape(lightRay, lightDistance);
+                HitResult h = s.hitShape(ray, distance);
 
                 if (h != null)
                 {
-                    shadowRay = true;
+                    hit = h;
+                    distance = hit.getDistance();
                 }
             }
 
+            // No shape to draw, next pixel
+            if (hit == null)
+                break;
 
-            // This light ray reaches our shape
-            if (!shadowRay)
+            Material currentMaterial = hit.getShape().getMaterial();
+
+            // Ambient lighting, so we add it regardless of the outcome with other lights
+            Colour ambientLight = new Colour(0.05, 0.05, 0.05);
+            outputColour.add(Colour.multiply(currentMaterial.getDiffuse(), ambientLight));
+
+            for (Light l : scene.getLights())
             {
+                Ray lightRay = new Ray(
+                        hit.getHitPoint(),
+                        new Vector(hit.getHitPoint(), l.getPosition())
+                );
+
+                // Length of light ray projected onto the normal
+                double lightProjection = Vector.dotProduct(lightRay.getDirection(), hit.getNormal());
+
+                // If true, light is on the other side of the surface
+                if (lightProjection <= 0.0)
+                    continue;
+
+                // Distance light traveled
+                double lightDistance = lightRay.getDirection().norm();
+                lightRay.getDirection().normalize();
+
+                // If a shape is between this light and
+                // our intersection point, move onto the next light
+
+                for (Shape s : scene.getShapes())
+                {
+                    HitResult h = s.hitShape(lightRay, lightDistance);
+
+                    if (h != null)
+                        continue;
+
+                }
 
                 // Lambert/diffuse shading
                 // The amount of light the surface receives is directly
@@ -132,7 +135,7 @@ public class Render
                 double lightPower = l.getIntensity() / d2;
 
                 // Total diffuse colour this light source contributed to this pixel
-                Colour diffuse = Colour.multiply((lambert * lightPower), currentMaterial.getDiffuse(), l.getColour());
+                Colour diffuse = Colour.multiply((lambert * lightPower * weight), currentMaterial.getDiffuse(), l.getColour());
                 outputColour.add(diffuse);
 
                 // Blinn-Phong/Specular shading, intensity based on both
@@ -141,24 +144,39 @@ public class Render
 
                 // Halfway vector between the light ray and our view ray
                 Vector halfDir = lightRay.getDirection()
-                                            .subtract(ray.getDirection())
-                                            .unitVector();
+                        .subtract(ray.getDirection())
+                        .unitVector();
 
                 // Cosine of the angle between our halfway vector and the surface normal
-                // Ranges from 0-1
                 double specAngle = Math.max(halfDir.dotProduct(hit.getNormal()), 0.0);
 
                 // Amount of reflected light in our view direction
                 double specPower = Math.pow(specAngle, currentMaterial.getShine());
 
                 // Total specular colour this light source contributed to this pixel
-                Colour specular = Colour.multiply((specPower * lightPower), currentMaterial.getSpecular(), l.getColour());
+                Colour specular = Colour.multiply((specPower * lightPower * weight), currentMaterial.getSpecular(), l.getColour());
                 outputColour.add(specular);
             }
-        }
-        // Primitive ambient lighting
-        Colour ambientLight = new Colour(0.05, 0.05, 0.05);
-        outputColour.add(Colour.multiply(currentMaterial.getDiffuse(), ambientLight));
+
+            if (currentMaterial.getReflectivity() == 0)
+                break;
+
+            weight *= currentMaterial.getReflectivity();
+
+            /**
+             * Take i to be our view direction (the incident direction)
+             * and N the normal at the surface.
+             * The reflection direction is given by
+             * i - 2 * (n.i) * n
+             */
+
+            Vector viewProjection = Vector.multiply(hit.getNormal(), Vector.dotProduct(ray.getDirection(), hit.getNormal()));
+            viewProjection = Vector.multiply(viewProjection, 2);
+            Vector reflected = Vector.subtract(ray.getDirection(), viewProjection);
+
+            ray = new Ray(hit.getHitPoint(), reflected);
+            bounce++;
+        } while (bounce < 5);
 
         return outputColour;
     }
