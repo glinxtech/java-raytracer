@@ -1,5 +1,7 @@
 package raytracer.ui;
 
+import raytracer.Render;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -10,14 +12,16 @@ public class ImageWindow extends JFrame implements ActionListener
 {
     private JMenu menu;
     private JMenuItem file, setting, close;
-    private JFrame f;
+    private static JLabel label;
+    private static JPanel imagePanel;
+    static JFrame f;
 
     public ImageWindow(BufferedImage img)
     {
         // Initialize image as icon
-        JLabel label = new JLabel(new ImageIcon(img));
+        label = new JLabel(new ImageIcon(img));
         // Panel that houses the image
-        JPanel imagePanel = new JPanel();
+        imagePanel = new JPanel();
         imagePanel.add(label);
 
         // Open a window with the size of our image
@@ -34,7 +38,17 @@ public class ImageWindow extends JFrame implements ActionListener
         file = new JMenuItem("Open File");
         file.addActionListener(this);
         setting = new JMenuItem("Settings");
-        setting.addActionListener(this);
+        // Open a new SettingsWindow and allow it to only be opened once
+        setting.addActionListener(new ActionListener() {
+            private SettingsWindow ww = null;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (ww == null) {
+                    ww = new SettingsWindow();
+                }
+                ww.f.setVisible(true);
+            }
+        });
         close = new JMenuItem("Exit");
         close.addActionListener(this);
         menu.add(file);
@@ -64,12 +78,16 @@ public class ImageWindow extends JFrame implements ActionListener
             // TODO: Finish when able to load objects
         }
 
-        // Opens settings menu
-        if (e.getSource() == setting)
-            new SettingsWindow();
-
         // Exits out of the program
         if (e.getSource() == close)
             System.exit(0);
+    }
+
+    public static void changeImg()
+    {
+        Render tracer = new Render();
+        label.setIcon(new ImageIcon(tracer.draw()));
+        f.revalidate();
+        f.repaint();
     }
 }
